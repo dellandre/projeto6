@@ -2,7 +2,7 @@
 
 try{
 
-    $conexao = new PDO("mysql:dbname=agenda;host=localhost", "root", "");
+    $conexao = new PDO("mysql:dbname=crud;host=localhost", "root", "");
 }
 
 catch(Exception $e) {
