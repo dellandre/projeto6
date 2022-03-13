@@ -1,21 +1,13 @@
-<?php
-include_once("conexao.php");
-?>
+<?php require_once("conexao.php"); ?>
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <link href="estilo.css" rel="stylesheet" id="bootstrap-css">
-    <script src="script.js"></script>
-    <title>Sistema</title>
-</head>
-<body>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="estilo.css" rel="stylesheet" id="bootstrap-css">
+<script src="script.js"></script>
+
 <div class="container">
     	<div class="row">
 			<div class="col-md-6 col-md-offset-3">
@@ -91,5 +83,53 @@ include_once("conexao.php");
 			</div>
 		</div>
 	</div>
-</body>
-</html>
+
+
+<!--CADASTRO DOS USUÁRIOS -->
+<?php 
+
+if(isset($_POST['registrar'])){
+
+	
+
+
+	$nome = $_POST['nome'];
+	$email = $_POST['email'];
+	$senha = $_POST['senha'];
+	$confirmar_senha = $_POST['confirmar-senha'];
+
+	if($senha == $confirmar_senha){
+
+		//VERIFICAR SE EXISTE O EMAIL CADASTRADO NO BANCO DE DADOS
+		$res = $conexao->query("SELECT * from usuarios where email = '$email'");
+		$dados = $res->fetchAll(PDO::FETCH_ASSOC);
+		$linhas = count($dados);
+
+		if($linhas == 0){
+			
+			$res = $conexao->prepare("insert into usuarios (nome, email, senha, nivel) values (:nome, :email, :senha, :nivel)");
+
+			$res->bindValue(":nome", $nome);
+			$res->bindValue(":email", $email);
+			$res->bindValue(":senha", $senha);
+			$res->bindValue(":nivel", "Comum");
+			$res->execute();
+
+			echo "<script language='javascript'>window.alert('Usuário Cadastrado!'); </script>";
+		}else{
+			echo "<script language='javascript'>window.alert('Este usuário já está cadastrado!'); </script>";
+		}
+
+		
+		
+	}else{
+		echo "<script language='javascript'>window.alert('As senhas são Diferentes!'); </script>";
+	}
+
+	
+}
+
+
+?>
+
+

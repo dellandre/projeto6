@@ -29,7 +29,7 @@ $res = $conexao->prepare("SELECT * from usuarios where email = :email and senha 
 			$_SESSION['nivel'] = $dados[0]['nivel'];
 			
 
-			echo "<script language='javascript'>window.location='admin/painel.php'; </script>";
+			echo "<script language='javascript'>window.location='painel.php'; </script>";
 
 			}else{
 
